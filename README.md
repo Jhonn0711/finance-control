@@ -50,7 +50,3 @@ Um sistema web completo para gestão de finanças pessoais, que permite ao usuá
 - Exportar transações em `.CSV`
 - Editar e excluir lançamentos
 
----
-
-## 📁 Estrutura de Pastas
-
