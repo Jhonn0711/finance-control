@@ -10,13 +10,13 @@ Um sistema web completo para gestão de finanças pessoais, que permite ao usuá
 - HTML5
 - CSS3
 - [Bootstrap 5](https://getbootstrap.com/)
-- JavaScript Vanilla
-- SweetAlert2 (alertas e feedbacks)
+- React.js
 
 ### Backend:
 - Node.js
 - Express.js
-- Supabase (autenticação + banco de dados PostgreSQL)
+- MySql (PhpMyAdmin)
+- JWT
 
 ---
 
