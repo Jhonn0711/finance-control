@@ -85,7 +85,7 @@ export default function DashboardPage() {
             <p className="text-muted-foreground">Visão geral das suas finanças</p>
           </div>
 
-          {data && data.alertas.length > 0 && (
+          {data?.alertas && data.alertas.length > 0 && (
             <Alert variant="destructive">
               <AlertTriangle className="h-4 w-4" />
               <AlertTitle>Atenção!</AlertTitle>
@@ -96,17 +96,17 @@ export default function DashboardPage() {
           <div className="grid gap-4 md:grid-cols-3">
             <StatCard
               title="Receitas do Mês"
-              value={`R$ ${data?.totalReceitas.toFixed(2) || "0,00"}`}
+              value={`R$ ${(data?.totalReceitas ?? 0).toFixed(2)}`}
               icon={TrendingUp}
               trend="up"
             />
             <StatCard
               title="Despesas do Mês"
-              value={`R$ ${data?.totalDespesas.toFixed(2) || "0,00"}`}
+              value={`R$ ${(data?.totalDespesas ?? 0).toFixed(2)}`}
               icon={TrendingDown}
               trend="down"
             />
-            <StatCard title="Saldo" value={`R$ ${data?.saldo.toFixed(2) || "0,00"}`} icon={Wallet} trend={saldoTrend} />
+            <StatCard title="Saldo" value={`R$ ${(data?.saldo ?? 0).toFixed(2)}`} icon={Wallet} trend={saldoTrend} />
           </div>
 
           <div className="grid gap-4 md:grid-cols-2">
@@ -116,7 +116,7 @@ export default function DashboardPage() {
                 <CardDescription>Distribuição dos seus gastos</CardDescription>
               </CardHeader>
               <CardContent>
-                {data && data.despesasPorCategoria.length > 0 ? (
+                {data?.despesasPorCategoria && data.despesasPorCategoria.length > 0 ? (
                   <ChartContainer
                     config={data.despesasPorCategoria.reduce(
                       (acc, cat, idx) => ({
@@ -139,7 +139,7 @@ export default function DashboardPage() {
                           cx="50%"
                           cy="50%"
                           outerRadius={100}
-                          label={(entry) => `${entry.nome}: R$ ${entry.total.toFixed(2)}`}
+                          label={(entry) => `${entry.nome}: R$ ${(entry.total ?? 0).toFixed(2)}`}
                         >
                           {data.despesasPorCategoria.map((entry, index) => (
                             <Cell key={`cell-${index}`} fill={entry.cor || `hsl(var(--chart-${(index % 5) + 1}))`} />
@@ -161,7 +161,7 @@ export default function DashboardPage() {
                 <CardDescription>Acompanhe seus financiamentos</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
-                {data && data.financiamentos.length > 0 ? (
+                {data?.financiamentos && data.financiamentos.length > 0 ? (
                   data.financiamentos.map((fin, idx) => {
                     const progresso = (fin.parcelas_pagas / fin.numero_parcelas) * 100
                     return (
@@ -180,7 +180,9 @@ export default function DashboardPage() {
                           </span>
                         </div>
                         <Progress value={progresso} className="h-2" />
-                        <p className="text-sm text-muted-foreground">Parcela: R$ {fin.valor_parcela.toFixed(2)}/mês</p>
+                        <p className="text-sm text-muted-foreground">
+                          Parcela: R$ ${(fin.valor_parcela ?? 0).toFixed(2)}/mês
+                        </p>
                       </div>
                     )
                   })

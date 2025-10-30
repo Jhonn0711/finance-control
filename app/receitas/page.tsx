@@ -27,8 +27,21 @@ export default function ReceitasPage() {
       const receitasData = await receitasRes.json()
       const categoriasData = await categoriasRes.json()
 
-      setReceitas(receitasData)
-      setCategorias(categoriasData)
+      // garante que receitas seja um array real
+      const receitasArray = Array.isArray(receitasData)
+        ? receitasData
+        : Array.isArray(receitasData?.data)
+        ? receitasData.data
+        : []
+
+      const categoriasArray = Array.isArray(categoriasData)
+        ? categoriasData
+        : Array.isArray(categoriasData?.data)
+        ? categoriasData.data
+        : []
+
+      setReceitas(receitasArray)
+      setCategorias(categoriasArray)
     } catch (error) {
       console.error("[v0] Erro ao carregar receitas:", error)
     } finally {
@@ -61,7 +74,10 @@ export default function ReceitasPage() {
     setEditingReceita(undefined)
   }
 
-  const totalReceitas = receitas.reduce((sum, r) => sum + Number(r.valor), 0)
+  // segurança extra contra undefined ou valores não numéricos
+  const totalReceitas = Array.isArray(receitas)
+    ? receitas.reduce((sum, r) => sum + (Number(r?.valor) || 0), 0)
+    : 0
 
   return (
     <div className="flex min-h-screen">
@@ -129,7 +145,9 @@ export default function ReceitasPage() {
                       </p>
                     </div>
                     <div className="flex items-center gap-4">
-                      <p className="text-2xl font-bold text-success">R$ {Number(receita.valor).toFixed(2)}</p>
+                      <p className="text-2xl font-bold text-success">
+                        R$ {Number(receita.valor).toFixed(2)}
+                      </p>
                       <div className="flex gap-2">
                         <Button variant="ghost" size="icon" onClick={() => handleEdit(receita)}>
                           <Pencil className="h-4 w-4" />
